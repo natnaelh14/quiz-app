@@ -133,5 +133,11 @@ a {
   color: black;
 }
 
+@media screen and (max-width: 900px) {
+  #box {
+    width: 400px;
+    height: 500px;
+  }
+}
 
 
