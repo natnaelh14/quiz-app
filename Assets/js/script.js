@@ -137,8 +137,8 @@ function addDeleteButton(li, i) {
 //logs the initial and user's score in the highlight.html and create an onclick for the delete button.
 function loadHighlight() {
   let list = document.getElementById("highlight-list");
-  var li = document.createElement("li");
   for (var i = 0; i < localStorage.length; i++) {
+    var li = document.createElement("li");
     var key = localStorage.key(i);
     var value = localStorage.getItem(key);
     li.appendChild(document.createTextNode(key + " - " + value + "  "));
@@ -186,7 +186,7 @@ function quizQuestion() {
     }
     return;
   }
-
+//creating the questions and choices pair
   let userQuestion = questionList[index];
   quizText.innerText = userQuestion.question;
   for (i = 0; i < userQuestion.options.length; i++) {

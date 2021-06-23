@@ -1,1 +1,0 @@
-Github Deployed Page - https://natnaelh14.github.io/quiz-app/
