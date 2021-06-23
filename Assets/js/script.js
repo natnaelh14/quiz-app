@@ -1,4 +1,5 @@
-const question = [
+//created and placed questions in an array of objects.
+const questionList = [
   {
     question:
       "Some months have 30 days, some months have 31 days. How many months have 28 days?",
@@ -64,12 +65,12 @@ let quesOption = document.getElementById("question-option");
 let generateBtn = document.getElementById("generate");
 let quizMsg = document.getElementById("quiz-message");
 let saveScore = document.getElementById("save-score");
-
 let index = 0;
 let counter = 0;
 let timerNum = 200;
 var quizCompleted = false;
 
+//I created submit button and input area. Then, I created an event listener for submit button.
 function submitInitials() {
   let textField = document.createElement("input");
   textField.type = "text";
@@ -86,50 +87,54 @@ function submitInitials() {
   saveScore.addEventListener("submit", submitResult);
 }
 
-function addDeleteButton(li) {
+//When generateBtn is clicked, the quizQuestion() function is executed and the timeNum countdown begins.
+if(generateBtn) {
+  generateBtn.addEventListener("click", () => {
+    quizQuestion();
+    setInterval(function () {
+      let timeRanOut = timerNum === 0;
+      if (!timeRanOut) timerNum--;
+      timer.innerHTML = "TIME - " + timerNum;
+      //conditional, if time runs out before the user finishes quiz.
+      if (timerNum === 0 && !quizCompleted) {
+        resetQuiz();
+        quizCompleted = true;
+        submitInitials();
+        if (counter >= 8) {
+          quizMsg.appendChild(
+            document.createTextNode(
+              "You have run out of time. Your final result is " + counter + "/10"
+            )
+          );
+          quizMsg.appendChild(document.createElement("br"));
+          quizMsg.appendChild(
+            document.createTextNode("You are officially a genius")
+          );
+        } else {
+          quizMsg.appendChild(
+            document.createTextNode(
+              "You have run out of time. Your final result is " + counter + "/10"
+            )
+          );
+          quizMsg.appendChild(document.createElement("br"));
+          quizMsg.appendChild(
+            document.createTextNode(
+              "Don't worry, We are all smart in our own way"
+            )
+          );
+        }
+      }
+    }, 1000);
+  });
+}
+//created delete button on highlight.html
+function addDeleteButton(li, i) {
   var delButton = document.createElement("button");
   delButton.innerHTML = "Delete";
-  delButton.id = "delete";
+  delButton.id = "delete-" + i;
   li.appendChild(delButton);
 }
-
-generateBtn.addEventListener("click", () => {
-  quizQuestion();
-  setInterval(function () {
-    let timeRanOut = timerNum === 0;
-    if (!timeRanOut) timerNum--;
-    timer.innerHTML = "TIME - " + timerNum;
-    if (timerNum === 0 && !quizCompleted) {
-      resetQuiz();
-      quizCompleted = true;
-      submitInitials();
-      if (counter >= 8) {
-        quizMsg.appendChild(
-          document.createTextNode(
-            "You have run out of time. Your final result is " + counter + "/10"
-          )
-        );
-        quizMsg.appendChild(document.createElement("br"));
-        quizMsg.appendChild(
-          document.createTextNode("You are officially a genius")
-        );
-      } else {
-        quizMsg.appendChild(
-          document.createTextNode(
-            "You have run out of time. Your final result is " + counter + "/10"
-          )
-        );
-        quizMsg.appendChild(document.createElement("br"));
-        quizMsg.appendChild(
-          document.createTextNode(
-            "Don't worry, We are all smart in our own way"
-          )
-        );
-      }
-    }
-  }, 1000);
-});
-
+//logs the initial and user's score in the highlight.html and create an onclick for the delete button.
 function loadHighlight() {
   let list = document.getElementById("highlight-list");
   var li = document.createElement("li");
@@ -137,27 +142,28 @@ function loadHighlight() {
     var key = localStorage.key(i);
     var value = localStorage.getItem(key);
     li.appendChild(document.createTextNode(key + " - " + value + "  "));
-    console.log(li);
     list.appendChild(li);
-    addDeleteButton(li);
+    addDeleteButton(li, i);
     li.appendChild(document.createElement("br"));
     li.appendChild(document.createElement("br"));
     list.onclick = function (event) {
-      if (event.target.id === "delete") {
-        localStorage.removeItem(key);
+      if (event.target.id.startsWith("delete")) {
+        var key  = event.target.id.split("-")[1];
+        localStorage.removeItem(localStorage.key(key));
         location.reload();
       }
     };
   }
 }
-
+//Saves the initials and score in the local storage.
 function submitResult() {
   var initial = document.getElementById("final-result").value;
   localStorage.setItem(initial, counter);
 }
 
 function quizQuestion() {
-  if (index > question.length - 1) {
+  resetQuiz();
+  if (index > questionList.length - 1) {
     submitInitials();
     quizCompleted = true;
     timerNum = 0;
@@ -178,10 +184,11 @@ function quizQuestion() {
         document.createTextNode("Don't worry, We are all smart in our own way")
       );
     }
+    return;
   }
-  resetQuiz();
-  let userQuestion = question[index];
-  document.getElementById("question").innerText = userQuestion.question;
+
+  let userQuestion = questionList[index];
+  quizText.innerText = userQuestion.question;
   for (i = 0; i < userQuestion.options.length; i++) {
     let button = document.createElement("button");
     button.onclick = function () {
@@ -189,6 +196,7 @@ function quizQuestion() {
         counter = counter + 1;
       }
       const index = findIndex(userQuestion, button.innerText);
+      //conditional checks whether the answer is correct or not. then, set css class based on the answer.
       if (button.innerText === userQuestion.answer) {
         const element = document.getElementById("button-" + index);
         element.setAttribute("class", "correct");
@@ -221,11 +229,11 @@ function quizQuestion() {
 function findIndex(question, selectedAnswer) {
   return question.options.indexOf(selectedAnswer);
 }
-
+//clears the html for every render.
 function resetQuiz() {
   document.getElementById("question").innerText = "";
   document.getElementById("question-option").innerHTML = "";
-  document.querySelector("h3").style.display = 'none';
+  document.querySelector("h3").style.display = "none";
   document.querySelector("ol").style.display = "none";
   generateBtn.remove();
 }
