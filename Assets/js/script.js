@@ -94,7 +94,7 @@ if(generateBtn) {
     setInterval(function () {
       let timeRanOut = timerNum === 0;
       if (!timeRanOut) timerNum--;
-      timer.innerHTML = "TIME - " + timerNum;
+      timer.innerHTML = "TIME - " + timerNum + 's';
       //conditional, if time runs out before the user finishes quiz.
       if (timerNum === 0 && !quizCompleted) {
         resetQuiz();

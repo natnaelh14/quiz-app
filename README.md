@@ -1,7 +1,8 @@
 Project Name - Quiz-App
 Github Deployed Page - https://natnaelh14.github.io/quiz-app/
 
-    In this project, I created a quiz app that utilizes local storage to save user's
+
+In this project, I created a quiz app that utilizes local storage to save user's
 previous tests. I started with with creating the questions and answers bank. I saved it
 in an array of objects. I created an event listener that executes time countdown and 
 question generator function. i created a submit button at the end of the quiz to 
