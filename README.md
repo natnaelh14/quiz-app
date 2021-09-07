@@ -1,7 +1,7 @@
 
 # Quiz App
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)<br/><br/>
-<img src="https://img.shields.io/github/last-commit/natnaelh14/quiz_app">
+<img src="https://img.shields.io/github/last-commit/natnaelh14/quiz-app">
 ## Live Link
  https://natnaelh14.github.io/quiz-app/
 ## Description
